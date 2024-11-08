@@ -1,4 +1,9 @@
 # Mastodon to Bluesky
+This is forked from https://github.com/mauricerenck/mastodon-to-bluesky. So far I have only added the following:
+
+- Upgraded packages due to issues with conversion to Bluesky.
+- Updated docker-compose to build the Docker image.
+
 #### Crosspost from Mastodon to Bluesky
 
 ![GitHub release](https://img.shields.io/github/release/mauricerenck/mastodon-to-bluesky.svg?maxAge=1800) ![License](https://img.shields.io/github/license/mashape/apistatus.svg)
@@ -18,7 +23,7 @@ You can run the script directly using Node.js or you can use the Docker image.
 Clone this repository and install the dependencies:
 
 ```bash
-git clone https://github.com/mauricerenck/mastodon-to-bluesky.git
+git clone https://code.alexhyett.com/alexhyett/mastodon-to-bluesky.git
 cd mastodon-to-bluesky
 npm install
 ```
