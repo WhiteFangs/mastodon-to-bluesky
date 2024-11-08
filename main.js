@@ -1,8 +1,9 @@
 require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
-const { RichText, BskyAgent } = require("@atproto/api");
+const { RichText, AtpAgent } = require("@atproto/api");
 const axios = require("axios");
+const he = require('he');
 
 // Mastodon credentials
 const mastodonInstance = process.env.MASTODON_INSTANCE;
@@ -10,7 +11,7 @@ const mastodonUser = process.env.MASTODON_USER;
 
 async function main() {
   // Bluesky agent
-  const agent = new BskyAgent({ service: process.env.BLUESKY_ENDPOINT });
+  const agent = new AtpAgent({ service: process.env.BLUESKY_ENDPOINT });
   const loginResponse = await agent.login({
     identifier: process.env.BLUESKY_HANDLE,
     password: process.env.BLUESKY_PASSWORD,
@@ -57,7 +58,8 @@ async function main() {
   }
 
   async function postToBluesky(textParts) {
-    const rootMessageResponse = await agent.post(await createBlueskyMessage(textParts[0]));
+    const blueskyMessage = await createBlueskyMessage(textParts[0]);
+    const rootMessageResponse = await agent.post(blueskyMessage);
 
     if (textParts.length === 1) return;
 
@@ -73,8 +75,11 @@ async function main() {
     }  
   }
 
-  function removeHtmlTags(input) {
-    return input.replace(/<[^>]*>/g, "");
+  function sanitizeHtml(input) {
+    const withoutHtml = input.replace(/<[^>]*>/g, "");
+    const decodeQuotes = he.decode(withoutHtml);
+    const addSpace = decodeQuotes.replace(/(https?:\/\/)/g, ' $1');
+    return addSpace;
   }
 
   function splitText(text, maxLength) {
@@ -127,7 +132,7 @@ async function main() {
       if (currentTimestampId > lastProcessedPostId && lastProcessedPostId != 0) {
         try {
           console.log('📧 posting to BlueSky', currentTimestampId)
-          const textParts = splitText(removeHtmlTags(item.object.content), 300);
+          const textParts = splitText(sanitizeHtml(item.object.content), 300);
           postToBluesky(textParts);
         } catch (error) {
           console.error('🔥 can\'t post to Bluesky', currentTimestampId, error)
