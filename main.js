@@ -4,6 +4,9 @@ const path = require("path");
 const { RichText, AtpAgent } = require("@atproto/api");
 const axios = require("axios");
 const he = require('he');
+const express = require('express');
+const app = express();
+const port = 8000;
 
 // Mastodon credentials
 const mastodonInstance = process.env.MASTODON_INSTANCE;
@@ -150,5 +153,15 @@ async function main() {
   // Fetch new posts every 5 minutes (adjust as needed)
   setInterval(fetchNewPosts, (process.env.INTERVAL_MINUTES ?? 5) * 60 * 1000);
 }
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Hello, world!',
+  });
+});
+
+app.listen(port, () => {
+  console.log(`App is listening on port ${port}`);
+});
 
 main()
