@@ -84,12 +84,12 @@ async function main() {
           parent: replyMessageResponse ?? rootMessageResponse,
         }
       });
-    }  
+    }
     return replyMessageResponse;
   }
 
   function sanitizeHtml(input) {
-    const withLinebreaks = input.replace(/<br \/>/g, '\r\n');
+    const withLinebreaks = input.replace(/<br \/>/g, '\r\n').replace(/<\/p><p>/g, '\r\n\r\n');
     const withoutHtml = withLinebreaks.replace(/<[^>]*>/g, "");
     const decodeQuotes = he.decode(withoutHtml);
     const addSpace = decodeQuotes.replace(/(https?:\/\/)/g, ' $1');
