@@ -79,7 +79,8 @@ async function main() {
   }
 
   function sanitizeHtml(input) {
-    const withoutHtml = input.replace(/<[^>]*>/g, "");
+    const withLinebreaks = input.replace(/<br \/>/g, '\r\n');
+    const withoutHtml = withLinebreaks.replace(/<[^>]*>/g, "");
     const decodeQuotes = he.decode(withoutHtml);
     const addSpace = decodeQuotes.replace(/(https?:\/\/)/g, ' $1');
     return addSpace;
