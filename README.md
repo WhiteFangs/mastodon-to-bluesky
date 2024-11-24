@@ -1,56 +1,46 @@
 # Mastodon to Bluesky
-This is forked from https://github.com/mauricerenck/mastodon-to-bluesky. So far I have only added the following:
+This is forked from [https://code.alexhyett.com/alexhyett/mastodon-to-bluesky](https://code.alexhyett.com/alexhyett/mastodon-to-bluesky) who forked from [https://github.com/mauricerenck/mastodon-to-bluesky](https://github.com/mauricerenck/mastodon-to-bluesky).
+I have changed the following to have a very easy free [Koyeb](https://koyeb.com) deployment:
 
-- Upgraded packages due to issues with conversion to Bluesky.
-- Updated docker-compose to build the Docker image.
+- Fix dockerignore to use .env
+- Added Express & API endpoints to port 8000 to pass Koyeb's TCP health checks
+- Updated the Readme to explain Koyeb free deployment
 
 #### Crosspost from Mastodon to Bluesky
 
-![GitHub release](https://img.shields.io/github/release/mauricerenck/mastodon-to-bluesky.svg?maxAge=1800) ![License](https://img.shields.io/github/license/mashape/apistatus.svg)
-
 ---
 
-This scripts listens to your Mastodon account and crossposts your toots to your Bluesky account. It uses the Mastodon API and the Bluesky API to achieve this. The script is written in Node.js and can be run on your local machine or on a server.
+This scripts listens to your Mastodon account and crossposts your toots to your Bluesky account every chosen interval (minutes). It uses the Mastodon API and the Bluesky API to achieve this. The script is written in Node.js and can be run very easily on a [Koyeb](https://koyeb.com) free deployment service with a GitHub account.
 
 ---
-
-## Installation
-
-You can run the script directly using Node.js or you can use the Docker image.
-
-### Node.js
-
-Clone this repository and install the dependencies:
-
-```bash
-git clone https://code.alexhyett.com/alexhyett/mastodon-to-bluesky.git
-cd mastodon-to-bluesky
-npm install
-```
 
 ## Configuration
+
+Clone this repository to your GitHub account as a __private repository__.
 
 Create a `.env` file in the root directory of the project and add the following variables:
 
 ```bash
-MASTODON_INSTANCE: 'https://mastodon.instance'
-MASTODON_USER: 'username'
-BLUESKY_ENDPOINT: 'https://bsky.social'
-BLUESKY_HANDLE: 'USERNAME.bsky.social'
-BLUESKY_PASSWORD: 'PASSWORD'
-INTERVAL_MINUTES: 5
+MASTODON_INSTANCE="https://mastodon.instance"
+MASTODON_USER="username"
+BLUESKY_ENDPOINT="https://bsky.social"
+BLUESKY_HANDLE="USERNAME.bsky.social"
+BLUESKY_PASSWORD="APP_PASSWORD"
+INTERVAL_MINUTES=5
 ```
 
-You can also set the same variables as environment variables in the `docker-compose.yml` file.
+Go to your Bluesky account, in Settings > Privacy & Security > App Passwords, create a new App Password with the name "MastodonToBluesky".
 
-## Usage
+Fill the created `.env` file with your data (do not use @ for the usernames), use the newly created App Password for the Bluesky Password. 
 
-To run the script, execute the following command:
+## Free installation using [Koyeb](https://koyeb.com)
 
-```bash
-node main.js
-```
+Create a free account on [Koyeb](https://koyeb.com), create a service, choose Web Service and connect with your GitHub account.
 
----
+Select your cloned private repository, select the free deployment, click next and deploy!
+
+Once the service is deployed, it should be running and crossposting every chosen interval.
+
+## Further development
 
 For more details see: https://maurice-renck.de/hub/tooling/crosspost-from-mastodon-to-bluesky
