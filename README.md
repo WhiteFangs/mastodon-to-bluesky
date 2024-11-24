@@ -4,6 +4,8 @@ I have changed the following to have a very easy free [Koyeb](https://koyeb.com)
 
 - Fix dockerignore to use .env
 - Added Express & API endpoints to port 8000 to pass Koyeb's TCP health checks
+- Handle line breaks in posts
+- Handle threads with consecutive posts
 - Updated the Readme to explain Koyeb free deployment
 
 #### Crosspost from Mastodon to Bluesky
